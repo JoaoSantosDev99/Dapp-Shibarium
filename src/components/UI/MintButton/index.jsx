@@ -1,9 +1,9 @@
 import styles from "./styles.module.css";
 
-const MintButton = ({ onClick }) => {
+const MintButton = ({ onClick, active }) => {
   return (
-    <button className={styles.mint} onClick={onClick}>
-      Mint
+    <button disabled={active} className={styles.mint} onClick={onClick}>
+      {active ? <span className="text-[35px]">&#9888;</span> : "Mint"}
     </button>
   );
 };

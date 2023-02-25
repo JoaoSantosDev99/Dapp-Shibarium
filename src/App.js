@@ -5,15 +5,16 @@ import {
 } from "@web3modal/ethereum";
 import { Web3Modal } from "@web3modal/react";
 import React from "react";
-import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { polygonMumbai } from "wagmi/chains";
+import { configureChains, createClient, goerli, WagmiConfig } from "wagmi";
+// import { goerli } from "wagmi/chains";
 import Header from "./components/Header";
 
 import Hero from "./hero";
 import Mint from "./mint";
 import Footer from "./components/Footer";
+import { ToastContainer } from "react-toastify";
 
-const chains = [polygonMumbai];
+const chains = [goerli];
 
 // Wagmi client
 const { provider } = configureChains(chains, [
@@ -21,7 +22,7 @@ const { provider } = configureChains(chains, [
 ]);
 const wagmiClient = createClient({
   autoConnect: true,
-  connectors: modalConnectors({ appName: "web3Modal", chains }),
+  connectors: modalConnectors({ appName: "Shibarium Name Service", chains }),
   provider,
 });
 
@@ -36,6 +37,7 @@ function App() {
         <Hero />
         <Mint />
         <Footer />
+        <ToastContainer />
       </WagmiConfig>
 
       <Web3Modal
