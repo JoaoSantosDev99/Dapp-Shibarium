@@ -4,7 +4,7 @@ import HeroButton from "./components/UI/HeroButton";
 const Hero = () => {
   return (
     <section className="w-full flex justify-center">
-      <div className="max-w-screen-2xl shadow-2xl bg-[#FFF4CE] pb-20 w-full flex flex-col items-center text-white">
+      <div className="max-w-screen-2xl px-2 bg-[#FFF4CE] pb-20 w-full flex flex-col items-center text-white">
         <div className="flex flex-col items-center mt-40">
           <ul className="text-[45px] text-[#563d1c] leading-[45px] lg:text-[55px] font-bold flex flex-col items-center lg:leading-[60px]">
             <li>Your key to a </li>

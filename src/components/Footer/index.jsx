@@ -6,7 +6,7 @@ import medium from "../../assets/Socials/medium.png";
 const Footer = () => {
   return (
     <footer className="w-full flex text-[#563d1c] justify-center">
-      <div className="max-w-screen-2xl shadow-2xl bg-[#ffeeb5] w-full py-8 flex flex-col items-center">
+      <div className="max-w-screen-2xl bg-[#ffeeb5] w-full py-8 flex flex-col items-center">
         <h2 className="font-bold text-2xl sm:text-4xl">
           Shibarium Name Service
         </h2>

@@ -4,17 +4,17 @@ import tag from "./assets/tag.png";
 import lateralTree from "./assets/lateralTree.png";
 import tower from "./assets/tower.png";
 import { useState } from "react";
+
 const Mint = () => {
   const [inuptText, setInputText] = useState("");
-
   const handleInputText = (e) => {
     setInputText(e.target.value.replace(".", ""));
   };
 
   return (
-    <section className="w-full flex justify-center h-[1000px]">
+    <section className="w-full flex justify-center h-[800px] md:h-[1000px]">
       <div className="max-w-screen-2xl bg-[#fff4ce] px-5 w-full relative flex justify-center items-center">
-        <div className="bg-[#fde6a1b6] z-20 flex flex-col items-center bg-clip-padding backdrop-filter backdrop-blur-md border-[3px] border-[#c08644] p-2 sm:p-10 rounded-xl">
+        <div className="bg-[#fde6a167] z-20 flex flex-col items-center bg-clip-padding backdrop-filter backdrop-blur-md border-[3px] border-[#c08644] p-2 sm:p-10 rounded-xl">
           <h2 className="font-bold text-center text-xl sm:text-2xl text-[#563d1c]">
             Mint Your Shibarium Domain Today!
           </h2>
@@ -49,7 +49,7 @@ const Mint = () => {
         <img
           src={tower}
           alt="tree"
-          className="absolute w-[600px] bottom-0 left-64 z-10"
+          className="absolute left-10 w-[300px] sm:w-[400px] sm:left-24 lg:w-[600px] bottom-0 lg:left-52 z-10"
         />
       </div>
     </section>
