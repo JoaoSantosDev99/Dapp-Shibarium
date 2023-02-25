@@ -8,7 +8,6 @@ import { Web3Modal } from "@web3modal/react";
 import { modalConnectors, walletConnectProvider } from "@web3modal/ethereum";
 import { polygonMumbai } from "wagmi/chains";
 import { EthereumClient } from "@web3modal/ethereum";
-import * as te from "tw-elements";
 
 const chains = [polygonMumbai];
 

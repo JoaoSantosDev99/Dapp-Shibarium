@@ -1,8 +1,8 @@
 import MintButton from "./components/UI/MintButton";
-import { Input } from "@material-tailwind/react";
 import shiba from "./assets/InpuIcon.png";
 import tag from "./assets/tag.png";
-
+import lateralTree from "./assets/lateralTree.png";
+import tower from "./assets/tower.png";
 import { useState } from "react";
 const Mint = () => {
   const [inuptText, setInputText] = useState("");
@@ -12,9 +12,9 @@ const Mint = () => {
   };
 
   return (
-    <section className="w-full flex justify-center min-h-screen border">
-      <div className="max-w-screen-lg px-5 w-full flex justify-center items-center">
-        <div className="bg-[#fde6a19f] flex flex-col items-center bg-clip-padding backdrop-filter backdrop-blur-xl border-[3px] border-[#c08644] p-2 sm:p-10 rounded-xl">
+    <section className="w-full flex justify-center h-[1000px]">
+      <div className="max-w-screen-2xl bg-[#fff4ce] px-5 w-full relative flex justify-center items-center">
+        <div className="bg-[#fde6a1b6] z-20 flex flex-col items-center bg-clip-padding backdrop-filter backdrop-blur-md border-[3px] border-[#c08644] p-2 sm:p-10 rounded-xl">
           <h2 className="font-bold text-center text-xl sm:text-2xl text-[#563d1c]">
             Mint Your Shibarium Domain Today!
           </h2>
@@ -41,6 +41,16 @@ const Mint = () => {
           </div>
           <MintButton />
         </div>
+        <img
+          src={lateralTree}
+          alt="tree"
+          className="absolute w-[800px] right-0 top-10 z-10"
+        />
+        <img
+          src={tower}
+          alt="tree"
+          className="absolute w-[600px] bottom-0 left-64 z-10"
+        />
       </div>
     </section>
   );

@@ -9,7 +9,6 @@ import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { polygonMumbai } from "wagmi/chains";
 import Header from "./components/Header";
 
-import sunshine from "./assets/bg.png";
 import Hero from "./hero";
 import Mint from "./mint";
 import Footer from "./components/Footer";

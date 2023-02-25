@@ -8,7 +8,7 @@ body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background-color: bisque;
+  background-color: #caa569;
   /* background-image: url("./assets/bg.png");
   background-image: no-repeat;
   background-size: cover;
@@ -18,7 +18,7 @@ body {
 
 ::selection {
   color: rgb(101, 72, 50);
-  background-color: rgb(251, 214, 153);
+  background-color: rgb(202, 165, 105);
 }
 
 /* width */
@@ -33,7 +33,7 @@ body {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgb(169, 134, 83);
+  background: rgb(94, 74, 43);
   border-radius: 5px;
 }
 
