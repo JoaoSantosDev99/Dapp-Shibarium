@@ -49,7 +49,7 @@ const Mint = () => {
   // function calls
   const mint = async () => {
     console.log("mint");
-
+    if (inuptText === "") return;
     if (validateAddress(inuptText)) {
       console.log("valid");
       try {
@@ -58,10 +58,7 @@ const Mint = () => {
 
         setSuccess(true);
         setInputText("");
-      } catch (error) {
-        console.log(error);
-        alert("error");
-      }
+      } catch (error) {}
     }
   };
 
