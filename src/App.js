@@ -12,7 +12,6 @@ import Header from "./components/Header";
 import Hero from "./hero";
 import Mint from "./mint";
 import Footer from "./components/Footer";
-import { ToastContainer } from "react-toastify";
 
 const chains = [goerli];
 
@@ -37,7 +36,6 @@ function App() {
         <Hero />
         <Mint />
         <Footer />
-        <ToastContainer />
       </WagmiConfig>
 
       <Web3Modal
