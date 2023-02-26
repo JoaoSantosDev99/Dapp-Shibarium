@@ -5,7 +5,7 @@ import tag from "./assets/tag.png";
 import error from "./assets/warning.png";
 import lateralTree from "./assets/lateralTree.png";
 import tower from "./assets/tower.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSigner } from "wagmi";
 import { ethers } from "ethers";
 
@@ -43,6 +43,25 @@ const Mint = () => {
   const tokenAbi = tokenabi;
 
   // const { address, isConnected } = useAccount();
+  const staticProvider = new ethers.providers.JsonRpcProvider(
+    "https://rpc.ankr.com/eth_goerli"
+  );
+
+  const readOnlyNftContract = new ethers.Contract(
+    nftAddress,
+    nftAbi,
+    staticProvider
+  );
+
+  useEffect(() => {
+    const getPrice = async () => {
+      const price = await readOnlyNftContract.getPrice();
+      const formatedAmount = ethers.utils.formatUnits(price, 18);
+      setNftPrice(Math.trunc(formatedAmount));
+    };
+    getPrice();
+  }, []);
+
   const { data: signer } = useSigner();
 
   const nfContract = new ethers.Contract(nftAddress, nftAbi, signer);
@@ -101,7 +120,7 @@ const Mint = () => {
             </h2>
 
             <span className="text-[#fee8cb] bg-[#705633] border border-[#d9950ee2] mt-2 shadow-lg py-2 px-3 rounded-xl font-extrabold mb-10">
-              .INU Price: {nftPrice === "" ? "Loading..." : nftPrice}
+              {nftPrice === "" ? "Loading..." : nftPrice + " $SNS"}
             </span>
             <div className=" flex flex-col items-center mb-2">
               <input
