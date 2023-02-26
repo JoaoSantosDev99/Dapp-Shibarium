@@ -16,6 +16,7 @@ const Mint = () => {
   const [inuptText, setInputText] = useState("");
   const [available, setAvailable] = useState(true);
   const [success, setSuccess] = useState(false);
+  const [nftPrice, setNftPrice] = useState("");
 
   const handleInputText = (e) => {
     validateAddress(
@@ -100,7 +101,7 @@ const Mint = () => {
             </h2>
 
             <span className="text-[#fee8cb] bg-[#705633] border border-[#d9950ee2] mt-2 shadow-lg py-2 px-3 rounded-xl font-extrabold mb-10">
-              $SNS Price: 13.37
+              .INU Price: {nftPrice === "" ? "Loading..." : nftPrice}
             </span>
             <div className=" flex flex-col items-center mb-2">
               <input
