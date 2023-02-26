@@ -8,17 +8,14 @@ import tower from "./assets/tower.png";
 import { useState } from "react";
 import { useSigner } from "wagmi";
 import { ethers } from "ethers";
-import abi from "./contracts/abi.json";
 
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import nftabi from "./contracts/nft_abi.json";
+import tokenabi from "./contracts/token_abi.json";
 
 const Mint = () => {
   const [inuptText, setInputText] = useState("");
   const [available, setAvailable] = useState(true);
   const [success, setSuccess] = useState(false);
-
-  const notify = () => toast.success("Wow so easy!");
 
   const handleInputText = (e) => {
     validateAddress(
@@ -38,22 +35,44 @@ const Mint = () => {
     );
   };
 
-  const contractAddress = "0xBd4f34F9433eE883d85dfC3BdF71c8a3B6Ab7a61";
-  const contracABI = abi;
+  const nftAddress = "0x5E8e515A94e776D294AB3BCc6044614C65E12e09";
+  const nftAbi = nftabi;
+
+  const tokenAddress = "0xb0B1a517a507fAaD738d8f4C34D8432a460e78f3";
+  const tokenAbi = tokenabi;
 
   // const { address, isConnected } = useAccount();
   const { data: signer } = useSigner();
 
-  const contract = new ethers.Contract(contractAddress, contracABI, signer);
+  const nfContract = new ethers.Contract(nftAddress, nftAbi, signer);
+  const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, signer);
 
   // function calls
   const mint = async () => {
     console.log("mint");
     if (inuptText === "") return;
+
+    try {
+      console.log("approve");
+      const targetAmount = await nfContract.getPrice();
+      const formatedAmount = ethers.utils.formatUnits(targetAmount, 0);
+      console.log(formatedAmount * 1.25);
+      console.log(formatedAmount);
+
+      const approve = await tokenContract.approve(
+        nftAddress,
+        (formatedAmount * 1.25).toString() // formatedAmount.toString()
+      );
+
+      await approve.wait();
+    } catch (error) {
+      console.log(error);
+    }
+
     if (validateAddress(inuptText)) {
       console.log("valid");
       try {
-        const register = await contract.register(inuptText);
+        const register = await nfContract.register(inuptText);
         await register.wait();
 
         setSuccess(true);
@@ -66,7 +85,7 @@ const Mint = () => {
     if (signer === undefined) {
       return;
     }
-    const call = await contract.getAddress(text);
+    const call = await nfContract.getAddress(text);
     setAvailable(call === "0x0000000000000000000000000000000000000000");
     return call === "0x0000000000000000000000000000000000000000";
   };
@@ -118,7 +137,7 @@ const Mint = () => {
                 You just purchased a Shibarium domain!
               </h2>
               <a
-                href="https://testnets.opensea.io/collection/sns-beta-test-3"
+                href="https://testnets.opensea.io/collection/sns-beta-test-4"
                 target="_blank"
                 rel="noreferrer"
               >

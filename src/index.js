@@ -8,7 +8,6 @@ import { Web3Modal } from "@web3modal/react";
 import { modalConnectors, walletConnectProvider } from "@web3modal/ethereum";
 // import { goerli } from "wagmi/chains";
 import { EthereumClient } from "@web3modal/ethereum";
-import { toast } from "react-toastify";
 
 const chains = [goerli];
 
@@ -20,7 +19,7 @@ const { provider } = configureChains(
 
 const wagmiClient = createClient({
   autoConnect: true,
-  connectors: modalConnectors({ appName: "Test", chains }),
+  connectors: modalConnectors({ appName: "Shibarium Name Service", chains }),
   provider,
 });
 
@@ -35,7 +34,7 @@ root.render(
         <App />
       </ContextProvider>
       <Web3Modal
-        projectId="a2427e0c1e47f2fdf878366cb31eaf25"
+        projectId="2f1f53444758c9a32897f70a77b810ef"
         ethereumClient={ethereumClient}
       />
     </WagmiConfig>
