@@ -5,14 +5,21 @@ import tag from "./assets/tag.png";
 import error from "./assets/warning.png";
 import lateralTree from "./assets/lateralTree.png";
 import tower from "./assets/tower.png";
+import add from "./assets/post.png";
+import alert from "./assets/alert.png";
 import { useEffect, useState } from "react";
-import { useSigner } from "wagmi";
+import { useAccount, useSigner } from "wagmi";
 import { ethers } from "ethers";
+import copy from "./assets/copy.png";
+import done from "./assets/check.png";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import nftabi from "./contracts/nft_abi.json";
 import tokenabi from "./contracts/token_abi.json";
 
 const Mint = () => {
+  const { isConnected } = useAccount();
+  const [copied, setCopied] = useState(false);
   const [inuptText, setInputText] = useState("");
   const [available, setAvailable] = useState(true);
   const [success, setSuccess] = useState(false);
@@ -22,7 +29,7 @@ const Mint = () => {
     validateAddress(
       e.target.value
         .replace(".", "")
-        .replace(/[^a-zA-Z ]/g, "")
+        .replace(/[^a-zA-Z0-9 ]/g, "")
         .toLowerCase()
         .trim()
     );
@@ -30,16 +37,23 @@ const Mint = () => {
     setInputText(
       e.target.value
         .replace(".", "")
-        .replace(/[^a-zA-Z ]/g, "")
+        .replace(/[^a-zA-Z0-9 ]/g, "")
         .toLowerCase()
         .trim()
     );
   };
 
-  const nftAddress = "0x5E8e515A94e776D294AB3BCc6044614C65E12e09";
+  const changeCopy = () => {
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 3000);
+  };
+
+  const nftAddress = "0x2Cc4AeecB926E4B28a41dad6217aD96e0bB8845C";
   const nftAbi = nftabi;
 
-  const tokenAddress = "0xb0B1a517a507fAaD738d8f4C34D8432a460e78f3";
+  const tokenAddress = "0x2147a3c7B8a3D9ff4004B2938F592a6fAF0eba22";
   const tokenAbi = tokenabi;
 
   // const { address, isConnected } = useAccount();
@@ -69,15 +83,14 @@ const Mint = () => {
 
   // function calls
   const mint = async () => {
-    console.log("mint");
     if (inuptText === "") return;
+    if (signer === undefined) {
+      return;
+    }
 
     try {
-      console.log("approve");
       const targetAmount = await nfContract.getPrice();
       const formatedAmount = ethers.utils.formatUnits(targetAmount, 0);
-      console.log(formatedAmount * 1.25);
-      console.log(formatedAmount);
 
       const approve = await tokenContract.approve(
         nftAddress,
@@ -90,14 +103,31 @@ const Mint = () => {
     }
 
     if (validateAddress(inuptText)) {
-      console.log("valid");
       try {
-        const register = await nfContract.register(inuptText);
-        await register.wait();
+        const test = await nfContract.register(inuptText);
+        await test.wait();
 
         setSuccess(true);
+        setInterval(() => {
+          setSuccess(false);
+        }, 15000);
         setInputText("");
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const getTokens = async () => {
+    if (signer === undefined) {
+      return;
+    }
+
+    try {
+      await tokenContract.getTokens();
+    } catch (error) {
+      console.log("error");
+      console.log(error);
     }
   };
 
@@ -114,14 +144,40 @@ const Mint = () => {
     <section className="w-full flex justify-center h-[800px] md:h-[1000px]">
       <div className="max-w-screen-2xl bg-[#fff4ce] px-5 w-full relative flex justify-center items-center">
         <div className="flex flex-col gap-2">
-          <div className="bg-[#fde6a167] z-20 flex flex-col items-center bg-clip-padding backdrop-filter backdrop-blur-md border-[3px] border-[#c08644] p-2 sm:p-10 rounded-xl">
+          <div className="bg-[#fde6a1b8] z-20 flex flex-col items-center bg-clip-padding backdrop-filter backdrop-blur-md border-[3px] border-[#c08644] p-2 sm:px-10 py-5 rounded-xl">
+            <h2 className="font-bold flex gap-2 justify-center items-center text-center text-xl sm:text-4xl text-[#563d1c]">
+              <img src={alert} alt="alert" className="w-6 sm:w-8 h-6 sm:h-8" />
+              Attention!
+            </h2>
+            <h2 className="font-bold flex justify-center items-center text-center text-xl sm:text-2xl text-[#563d1c]">
+              This is a demo running on Goerli
+            </h2>
+          </div>
+
+          <div className="bg-[#fde6a167] z-20 flex flex-col items-center bg-clip-padding backdrop-filter backdrop-blur-md border-[3px] border-[#c08644] py-3 p-2 sm:p-10 rounded-xl">
             <h2 className="font-bold text-center text-xl sm:text-2xl text-[#563d1c]">
               Mint Your Shibarium Domain Today!
             </h2>
 
-            <span className="text-[#fee8cb] bg-[#705633] border border-[#d9950ee2] mt-2 shadow-lg py-2 px-3 rounded-xl font-extrabold mb-10">
-              {nftPrice === "" ? "Loading..." : nftPrice + " $SNS"}
-            </span>
+            <div className="flex items-center gap-2 mb-4 mt-2">
+              <CopyToClipboard text="0x2147a3c7B8a3D9ff4004B2938F592a6fAF0eba22">
+                <button
+                  onClick={changeCopy}
+                  className="bg-[#ffedcade] flex gap-2 items-center text-center placeholder:text-[#dbb88c] text-[#82633b] rounded-xl h-10 px-2 italic font-bold border-[3px] border-[#be9867] outline-none"
+                >
+                  0x21...ba22{" "}
+                  {copied ? (
+                    <img src={done} alt="done" className="w-5 h-5" />
+                  ) : (
+                    <img src={copy} alt="copy" className="w-5 h-5" />
+                  )}
+                </button>
+              </CopyToClipboard>
+              <span className="text-[#fee8cb] bg-[#705633] border border-[#d9950ee2] shadow-lg py-2 px-3 rounded-xl font-extrabold">
+                {nftPrice === "" ? "Loading..." : nftPrice + " $SNS"}
+              </span>
+            </div>
+
             <div className=" flex flex-col items-center mb-2">
               <input
                 value={inuptText}
@@ -151,13 +207,14 @@ const Mint = () => {
             </div>
             <MintButton active={!available} onClick={mint} />
           </div>
-          {success && (
+
+          {success ? (
             <div className="bg-[#fde6a1b8] z-20 flex flex-col items-center bg-clip-padding backdrop-filter backdrop-blur-md border-[3px] border-[#c08644] p-2 sm:p-10 rounded-xl">
               <h2 className="font-bold text-center text-xl sm:text-2xl text-[#563d1c]">
                 You just purchased a Shibarium domain!
               </h2>
               <a
-                href="https://testnets.opensea.io/collection/sns-beta-test-4"
+                href="https://testnets.opensea.io/collection/shibariumnameservicetest"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -167,7 +224,60 @@ const Mint = () => {
                 </button>
               </a>
             </div>
+          ) : (
+            <div className="bg-[#fde6a1b8] z-20 flex flex-col items-center bg-clip-padding backdrop-filter backdrop-blur-md border-[3px] border-[#c08644] p-2 sm:px-10 py-5 rounded-xl">
+              <h2 className="font-bold text-center text-xl sm:text-2xl text-[#563d1c]">
+                Get some testnet funds here
+              </h2>
+              <div className="flex gap-2">
+                <button
+                  onClick={getTokens}
+                  className="text-[#fee8cb] flex justify-center items-center gap-2 bg-[#705633] border border-[#d9950ee2] mt-2 shadow-lg py-2 px-3 rounded-xl font-extrabold"
+                >
+                  Get test $SNS
+                  <img src={add} alt="redirect" className="w-5 h-5" />
+                </button>
+
+                <a
+                  href="https://faucets.chain.link/goerli"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <button className="text-[#fee8cb] flex justify-center items-center gap-1 bg-[#705633] border border-[#d9950ee2] mt-2 shadow-lg py-2 px-3 rounded-xl font-extrabold">
+                    Goerli Faucet
+                    <img src={redirect} alt="redirect" className="w-6 h-6" />
+                  </button>
+                </a>
+              </div>
+            </div>
           )}
+
+          {/* Testnet faucet */}
+          {/* <div className="bg-[#fde6a1b8] z-20 flex flex-col items-center bg-clip-padding backdrop-filter backdrop-blur-md border-[3px] border-[#c08644] p-2 sm:px-10 py-5 rounded-xl">
+            <h2 className="font-bold text-center text-xl sm:text-2xl text-[#563d1c]">
+              Get some testnet funds here
+            </h2>
+            <div className="flex gap-2">
+              <button
+                onClick={getTokens}
+                className="text-[#fee8cb] flex justify-center items-center gap-2 bg-[#705633] border border-[#d9950ee2] mt-2 shadow-lg py-2 px-3 rounded-xl font-extrabold"
+              >
+                Get test $SNS
+                <img src={add} alt="redirect" className="w-5 h-5" />
+              </button>
+
+              <a
+                href="https://faucets.chain.link/goerli"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <button className="text-[#fee8cb] flex justify-center items-center gap-1 bg-[#705633] border border-[#d9950ee2] mt-2 shadow-lg py-2 px-3 rounded-xl font-extrabold">
+                  Goerli Faucet
+                  <img src={redirect} alt="redirect" className="w-6 h-6" />
+                </button>
+              </a>
+            </div>
+          </div> */}
         </div>
 
         <img
