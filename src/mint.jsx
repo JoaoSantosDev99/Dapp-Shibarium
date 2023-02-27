@@ -154,7 +154,7 @@ const Mint = () => {
             </h2>
           </div>
 
-          <div className="bg-[#fde6a167] z-20 flex flex-col items-center bg-clip-padding backdrop-filter backdrop-blur-md border-[3px] border-[#c08644] py-3 p-2 sm:p-10 rounded-xl">
+          <div className="bg-[#fde6a167] max-w-xl w-full z-20 flex flex-col items-center bg-clip-padding backdrop-filter backdrop-blur-md border-[3px] border-[#c08644] py-3 p-2 sm:p-10 rounded-xl">
             <h2 className="font-bold text-center text-xl sm:text-2xl text-[#563d1c]">
               Mint Your Shibarium Domain Today!
             </h2>
