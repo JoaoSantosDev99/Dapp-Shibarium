@@ -8,7 +8,7 @@ import tower from "./assets/tower.png";
 import add from "./assets/post.png";
 import alert from "./assets/alert.png";
 import { useEffect, useState } from "react";
-import { useAccount, useSigner } from "wagmi";
+import { useSigner } from "wagmi";
 import { ethers } from "ethers";
 import copy from "./assets/copy.png";
 import done from "./assets/check.png";
@@ -17,13 +17,18 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import nftabi from "./contracts/nft_abi.json";
 import tokenabi from "./contracts/token_abi.json";
 
+import { useNetwork, useSwitchNetwork } from "wagmi";
+
 const Mint = () => {
-  const { isConnected } = useAccount();
   const [copied, setCopied] = useState(false);
   const [inuptText, setInputText] = useState("");
   const [available, setAvailable] = useState(true);
   const [success, setSuccess] = useState(false);
   const [nftPrice, setNftPrice] = useState("");
+
+  const { chain } = useNetwork();
+  const { chains, error, isLoading, pendingChainId, switchNetwork } =
+    useSwitchNetwork();
 
   const handleInputText = (e) => {
     validateAddress(
@@ -73,6 +78,8 @@ const Mint = () => {
       const formatedAmount = ethers.utils.formatUnits(price, 18);
       setNftPrice(Math.trunc(formatedAmount));
     };
+
+    console.log(chain?.id);
     getPrice();
   }, []);
 
@@ -86,6 +93,10 @@ const Mint = () => {
     if (inuptText === "") return;
     if (signer === undefined) {
       return;
+    }
+
+    if (chain?.id !== 5) {
+      switchNetwork?.(5);
     }
 
     try {
@@ -239,7 +250,7 @@ const Mint = () => {
                 </button>
 
                 <a
-                  href="https://faucets.chain.link/goerli"
+                  href="https://goerlifaucet.com/"
                   target="_blank"
                   rel="noreferrer"
                 >

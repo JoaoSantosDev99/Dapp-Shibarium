@@ -23,12 +23,20 @@ const Footer = () => {
             </a>
           </li>
           <li>
-            <a title="Coming Soon!">
+            <a
+              href="https://twitter.com/dogtag_id"
+              rel="noreferrer"
+              target="_blank"
+            >
               <img src={twitter} alt="twitter" className="w-10" />
             </a>
           </li>
           <li>
-            <a title="Coming Soon!">
+            <a
+              href="https://medium.com/dogtag-id"
+              rel="noreferrer"
+              target="_blank"
+            >
               <img src={medium} alt="medium" className="w-10" />
             </a>
           </li>
