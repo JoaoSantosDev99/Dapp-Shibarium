@@ -10,7 +10,7 @@ const Footer = () => {
         <h2 className="font-bold text-2xl sm:text-4xl">
           Shibarium Name Service
         </h2>
-        <p>Build fast, host and deliver.</p>
+        <p>Every dog needs a name.</p>
         <ul className="flex justify-center gap-2 mb-10 mt-3">
           <li>
             <a href="https://t.me/dogtag_id" target="_blank" rel="noreferrer">
