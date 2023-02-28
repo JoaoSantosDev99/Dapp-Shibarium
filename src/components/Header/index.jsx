@@ -1,5 +1,5 @@
 import { Web3Button } from "@web3modal/react";
-import { useAccount, useSigner } from "wagmi";
+import { useAccount, useNetwork, useSigner, useSwitchNetwork } from "wagmi";
 import nftAbi from "../../contracts/nft_abi.json";
 import { ethers } from "ethers";
 import { useState } from "react";
@@ -11,8 +11,21 @@ import ConnectButton from "../UI/ConnectButton";
 
 const Header = () => {
   const { open } = useWeb3Modal();
+  const { chain } = useNetwork();
+  const { switchNetwork } = useSwitchNetwork();
 
   const { address, isConnected } = useAccount();
+
+  const connectWallet = () => {
+    if (chain?.id !== 5) {
+      switchNetwork?.(5);
+    }
+    try {
+      open();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <header className="w-full flex justify-center items-center">
@@ -28,12 +41,14 @@ const Header = () => {
           ) : (
             // <Web3Button />
             <div>
-              {" "}
               <div className="hidden sm:flex">
-                <ConnectButton title={"Connect Wallet"} onClick={open} />
+                <ConnectButton
+                  title={"Connect Wallet"}
+                  onClick={connectWallet}
+                />
               </div>
               <div className="sm:hidden">
-                <ConnectButton title={"Connect"} onClick={open} />
+                <ConnectButton title={"Connect"} onClick={connectWallet} />
               </div>
             </div>
           )}

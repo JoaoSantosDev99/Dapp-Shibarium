@@ -2,7 +2,6 @@ import redirect from "./assets/redirect.png";
 import MintButton from "./components/UI/MintButton";
 import shiba from "./assets/InpuIcon.png";
 import tag from "./assets/tag.png";
-import error from "./assets/warning.png";
 import lateralTree from "./assets/lateralTree.png";
 import tower from "./assets/tower.png";
 import add from "./assets/post.png";
@@ -13,11 +12,13 @@ import { ethers } from "ethers";
 import copy from "./assets/copy.png";
 import done from "./assets/check.png";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import error from "./assets/warning.png";
 
 import nftabi from "./contracts/nft_abi.json";
 import tokenabi from "./contracts/token_abi.json";
 
 import { useNetwork, useSwitchNetwork } from "wagmi";
+import { useWeb3Modal } from "@web3modal/react";
 
 const Mint = () => {
   const [copied, setCopied] = useState(false);
@@ -27,8 +28,7 @@ const Mint = () => {
   const [nftPrice, setNftPrice] = useState("");
 
   const { chain } = useNetwork();
-  const { chains, error, isLoading, pendingChainId, switchNetwork } =
-    useSwitchNetwork();
+  const { switchNetwork } = useSwitchNetwork();
 
   const handleInputText = (e) => {
     validateAddress(
@@ -84,20 +84,34 @@ const Mint = () => {
   }, []);
 
   const { data: signer } = useSigner();
+  const { open } = useWeb3Modal();
 
   const nfContract = new ethers.Contract(nftAddress, nftAbi, signer);
   const tokenContract = new ethers.Contract(tokenAddress, tokenAbi, signer);
 
+  const connectWallet = () => {
+    if (chain?.id !== 5) {
+      switchNetwork?.(5);
+    }
+
+    try {
+      open();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // function calls
   const mint = async () => {
-    if (inuptText === "") return;
     if (signer === undefined) {
-      return;
+      connectWallet();
     }
 
     if (chain?.id !== 5) {
       switchNetwork?.(5);
     }
+
+    if (inuptText === "") return;
 
     try {
       const targetAmount = await nfContract.getPrice();
@@ -130,8 +144,12 @@ const Mint = () => {
   };
 
   const getTokens = async () => {
+    if (chain?.id !== 5) {
+      switchNetwork?.(5);
+    }
+
     if (signer === undefined) {
-      return;
+      connectWallet();
     }
 
     try {
@@ -185,7 +203,9 @@ const Mint = () => {
                 </button>
               </CopyToClipboard>
               <span className="text-[#fee8cb] bg-[#705633] border border-[#d9950ee2] shadow-lg py-2 px-3 rounded-xl font-extrabold">
-                {nftPrice === "" ? "Loading..." : nftPrice + " $SNS"}
+                {nftPrice === ""
+                  ? "Loading..."
+                  : "Price: " + nftPrice + " $SNS"}
               </span>
             </div>
 
@@ -207,8 +227,14 @@ const Mint = () => {
                     </span>
                   ) : (
                     <span className="text-[#82633b] font-bold flex justify-center items-center gap-2">
-                      {inuptText}.inu
-                      <img src={tag} alt="tag" className="w-5 h-5" />
+                      {chain?.id !== 5 ? (
+                        "Please, connect or switch to Goerli."
+                      ) : (
+                        <span className="flex gap-1">
+                          {inuptText}.inu
+                          <img src={tag} alt="tag" className="w-5 h-5" />
+                        </span>
+                      )}
                     </span>
                   )}
                 </div>
