@@ -9,13 +9,17 @@ const Hero = () => {
           <ul className="text-[45px] text-[#563d1c] leading-[45px] lg:text-[55px] font-bold flex flex-col items-center lg:leading-[60px]">
             <li>Your key to a </li>
             <li>Shibarium.inu</li>
-            <li>Address</li>
+            <li>Addres</li>
           </ul>
           <ul className="flex gap-2 mt-5">
             <a title="coming soon">
               <HeroButton title="Lite Paper" />
             </a>
-            <a href="https://t.me/dogtag_id" target="_blank" rel="noreferrer">
+            <a
+              href="https://t.me/dogtag_id"
+              target="_blank"
+              rel="noreferrer"
+            >
               <HeroButton title="Telegram" />
             </a>
           </ul>
@@ -24,7 +28,11 @@ const Hero = () => {
             NFTs and just about anything else in the Shibarium Metaverse
           </p>
         </div>
-        <img src={hero} alt="samurai" className="w-[1000px]" />
+        <img
+          src={hero}
+          alt="samurai"
+          className="w-[1000px]"
+        />
       </div>
     </section>
   );
